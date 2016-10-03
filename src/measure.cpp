@@ -117,17 +117,19 @@ VL53L0X_Error rangingTest(VL53L0X_Dev_t *pMyDevice, ros::NodeHandle nh)
      *  Step  4 : Test ranging mode
      */
 
-	ros::Rate loop_rate(10);
+	ros::Rate loop_rate(15);
+
+	ROS_WARN ("\n\n***************Start ranging***************\n\n");
 
     if(Status == VL53L0X_ERROR_NONE)
     {
         while (ros::ok()){
-            ROS_INFO ("Call of VL53L0X_PerformSingleRangingMeasurement\n");
+            //ROS_INFO ("Call of VL53L0X_PerformSingleRangingMeasurement\n");
             Status = VL53L0X_PerformSingleRangingMeasurement(pMyDevice,
             		&RangingMeasurementData);
 
-            print_pal_error(Status);
-            print_range_status(&RangingMeasurementData);
+            //print_pal_error(Status);
+            //print_range_status(&RangingMeasurementData);
 
            
             //if (Status != VL53L0X_ERROR_NONE) break;
@@ -154,12 +156,12 @@ int main(int argc, char **argv)
 
     int32_t status_int;
 	
-	ros::init(argc, argv, "laser ranging");
+	ros::init(argc, argv, "laser_ros");
 
 	ros::NodeHandle nh;
 	//ros::Publisher rang_pub = nh.advertise<std_msgs::Int16>("mavros/laser_ranging", 1);
 	
-	uint32_t addr = 0x28; //(argv[1][2] - '0')*16 + (argv[1][3] - '0');
+	uint32_t addr = DEV2_I2C_ADDR; //(argv[1][2] - '0')*16 + (argv[1][3] - '0');
 
     // Initialize Comms
     pMyDevice->I2cDevAddr      = addr;
